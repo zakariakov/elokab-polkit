@@ -11,7 +11,7 @@ Elokab-polkit provides an Authentication Agent for PolicyKit built in Qt
 
 git clone https://github.com/zakariakov/elokab-polkit.git
 
-cd elokab-terminal
+cd  elokab-polkit
 
 qmake
 
