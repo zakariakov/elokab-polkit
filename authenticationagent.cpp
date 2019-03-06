@@ -66,15 +66,16 @@
 AuthenticationAgent::AuthenticationAgent(QObject *parent)
     : PolkitQt1::Agent::Listener(parent),
       m_isRuning(false),
-      dialogAgent(0),
-      mSession(0)
+      dialogAgent(nullptr),
+      mSession(nullptr)
 {
 
     PolkitQt1::UnixSessionSubject session(getpid());
-    if( !registerListener(session, "/org/tawhid/PolicyKit1/AuthenticationAgent"))
+    if( !registerListener(session, "/org/tawhid/PolicyKit1/AuthenticationAgent")){
         NotificationUtill::Notify("elokab-polkit-agent","elokab",
                                   "authentication","Cannot register authentication agent!",3000);
-
+         qApp->quit();
+    }
 }
 
 AuthenticationAgent::~AuthenticationAgent()
@@ -119,12 +120,12 @@ detals+=key+" : "+details.lookup(key)+"\n";
     if (dialogAgent)
     {
         delete dialogAgent;
-        dialogAgent = 0;
+        dialogAgent = nullptr;
     }
     if(mSession){
 
         delete mSession;
-        mSession=0;
+        mSession=nullptr;
     }
     QStringList listIdIdentifies;
     dialogAgent = new DialogAgent(detals, message, iconName/*, details, lst*/);
@@ -198,7 +199,7 @@ void AuthenticationAgent::completed(bool gainedAuthorization)
 
     if (!gainedAuthorization)
     {
-        QMessageBox::information(0, tr("Authorization Failed"), tr("Authorization failed for some reason"));
+        QMessageBox::information(nullptr, tr("Authorization Failed"), tr("Authorization failed for some reason"));
     }
     canceled(gainedAuthorization);
 }
@@ -208,7 +209,7 @@ void AuthenticationAgent::canceled(bool gainedAuthorization)
     if(mSession){
     mSession->result()->setCompleted();
     delete mSession;
-    mSession=0;
+    mSession=nullptr;
     }
     m_isRuning = false;
 }
@@ -216,12 +217,12 @@ void AuthenticationAgent::canceled(bool gainedAuthorization)
 
 void AuthenticationAgent::showError(const QString &text)
 {
-    QMessageBox::warning(0, tr("PolicyKit Error"), text);
+    QMessageBox::warning(nullptr, tr("PolicyKit Error"), text);
 }
 
 void AuthenticationAgent::showInfo(const QString &text)
 {
-    QMessageBox::information(0, tr("PolicyKit Information"), text);
+    QMessageBox::information(nullptr, tr("PolicyKit Information"), text);
 }
 
 

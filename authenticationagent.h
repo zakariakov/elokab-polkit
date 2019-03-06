@@ -57,7 +57,7 @@ class AuthenticationAgent : public PolkitQt1::Agent::Listener
     Q_OBJECT
 
 public:
-    AuthenticationAgent(QObject *parent = 0);
+    AuthenticationAgent(QObject *parent = nullptr);
     ~AuthenticationAgent();
 
 public slots:

@@ -76,6 +76,7 @@ QString DialogAgent::response()
 
 void DialogAgent::on_toolButton_toggled(bool checked)
 {
+    Q_UNUSED(checked);
    QTimer::singleShot(10,this,SLOT(adjustMe()));
 
 }

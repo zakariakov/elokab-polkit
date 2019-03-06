@@ -27,6 +27,7 @@
 #include <QtGui>
 
 
+#include "notificationutill.h"
 
 
 #include "authenticationagent.h"
@@ -44,6 +45,18 @@ int main(int argc, char *argv[])
     a.setQuitOnLastWindowClosed(false);
 
 
+
+        QDBusConnection connection = QDBusConnection::sessionBus();
+
+        if (! QDBusConnection::sessionBus().registerService(QString("org.tawhid.PolicyKit1.AuthenticationAgent.%1").arg(a.applicationName())))
+        {
+            NotificationUtill::Notify("elokab-polkit-agent","elokab",
+                                      "authentication","Cannot register tawhid  authentication agent!",3000);
+
+            return 1;
+
+
+        }
    /// جلب ترجمة البرنامج من مجلد البرنامج
     /// مسار مجلد البرنامج
     QDir appDir(a.applicationDirPath());
